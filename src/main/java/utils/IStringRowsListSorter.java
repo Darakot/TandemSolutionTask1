@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface IStringRowsListSorter {
 
-    void sort(List<String[]> rows, int columnIndex);
+    List<String> sort(List<String[]> rows, int columnIndex);
 }

@@ -3,12 +3,11 @@ package utils;
 
 import lombok.extern.log4j.Log4j;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Метод sort выполняет непосредственно сортировку.
@@ -24,14 +23,14 @@ public class Task1Impl implements IStringRowsListSorter {
 
 
     @Override
-    public void sort(List<String[]> rows, int columnIndex) {
+    public List<String> sort(List<String[]> rows, int columnIndex) {
         if (columnIndex > rows.get(0).length) {
             log.info("Колонки с индексом " + columnIndex + " нет.");
-            return;
+            return null;
         }
-
+        List<String> result = new ArrayList<>();
         //Парсим строки коллекции.
-        List<String[]> sortingResult = rows.stream()
+       rows.stream()
                 .map(strings -> Arrays.stream(strings)
                         .map(s -> {
                             if (s != null & s != "") s = parStr(s);
@@ -47,10 +46,14 @@ public class Task1Impl implements IStringRowsListSorter {
 
                     return CompareToString(s1[columnIndex], s2[columnIndex]);
                 })
-                .collect(Collectors.toList());
-        Collections.copy(rows, sortingResult);
+                .forEach(strings -> {
+                    result.add(strings[columnIndex]);
+                });
+
+
         log.info(String.format("Сортировка по колонке №%s успешна", columnIndex));
 
+        return result;
     }
 
     /**
